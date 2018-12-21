@@ -6,16 +6,13 @@ endif
 
 let g:autoloaded_vsession = 1
 
-" session path
-let s:session_path = expand('~/.vim/sessions')
-
-if !isdirectory(s:session_path)
-    call mkdir(s:session_path, "p")
+if !isdirectory(g:session_path)
+    call mkdir(g:session_path, "p")
 endif
 
 " save session
 function! vsession#save(file)
-    execute 'silent mksession!' s:session_path . '/' . a:file
+    execute 'silent mksession!' g:session_path . '/' . a:file
 endfunction
 
 " load session
