@@ -2,7 +2,7 @@
 The vim session manager plugin.
 Can save,load and delete sessions.
 
-![image](https://i.imgur.com/SXdmOk9.gif)
+![](screenshots/vsession.gif)
 
 # Installation
 ```toml
