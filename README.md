@@ -26,7 +26,7 @@ load session
 ```vim
 " sessions will display in popup window.
 " press enter will load specified session.
-" press esc will close popup window.
+" press x will close popup window.
 :LoadSession
 
 " use fzf.vim interface
