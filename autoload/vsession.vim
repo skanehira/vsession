@@ -1,27 +1,44 @@
 scriptencoding utf-8
 
-if exists('g:autoloaded_vsession')
-    finish
-endif
-
-let g:autoloaded_vsession = 1
-
-if !isdirectory(g:session_path)
-    call mkdir(g:session_path, "p")
-endif
-
-" save session
-function! vsession#save(file)
-    execute 'silent mksession!' g:session_path . '/' . a:file
+function! s:_path_join(file) abort
+    return g:session_path . '/' . a:file
 endfunction
 
-" load session
-function! vsession#load(file)
-    execute 'silent source' a:file
+function! s:_load_session(sessions, id, idx) abort
+    if !a:idx
+        return
+    endif
+    call vsession#load_file(a:sessions[a:idx-1])
+endfunction
+
+" save session file
+function! vsession#save(file) abort
+    execute 'silent mksession!' s:_path_join(a:file)
+    echo "saved" a:file
+endfunction
+
+" load specified session file
+function! vsession#load_file(file) abort
+    execute 'silent source' s:_path_join(a:file)
+    echo "loaded" a:file
+endfunction
+
+" using popup_window to load session file
+function! vsession#load() abort
+    if has("patch-8.1.1575")
+        let l:sessions = readdir(g:session_path)
+        call popup_menu(l:sessions, {
+                    \ 'filter': 'popup_filter_menu',
+                    \ 'callback': function('s:_load_session', [l:sessions]),
+                    \ 'borderchars': ['-','|','-','|','+','+','+','+'],
+                    \ })
+    else
+        echoerr "this version not support popup_window"
+    endif
 endfunction
 
 " delete session
-function! vsession#delete(file)
-    call delete(expand(a:file))
+function! vsession#delete(file) abort
+    call delete(s:_path_join(a:file))
 endfunction
 
