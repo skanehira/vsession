@@ -5,7 +5,7 @@ function! s:_path_join(file) abort
 endfunction
 
 function! s:_load_session(sessions, id, idx) abort
-    if !a:idx
+    if a:idx ==# -1
         return
     endif
     call vsession#load_file(a:sessions[a:idx-1])
