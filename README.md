@@ -23,18 +23,16 @@ let g:vsession_use_fzf = 1
 ```
 
 # Usage
+Also reference help.
+
 ```vim
 " save the session.
-"input session file name.
 :SaveSession
 
 " load the session.
-" if fzf not enable and your vim version is 8.1.1575 or above, sessions will displayed in popup window.
-" in the popup window, press enter will load specified session, and press x will close popup window.
-" other than that, you should input session file name.
 :LoadSession
 
 " delete session.
-" Basic operation is the same as LoadSession
 :DeleteSession
 ```
+
