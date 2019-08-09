@@ -16,7 +16,7 @@ endfunction
 
 " load session
 function! vsession#load() abort
-	if match(split(execute('scriptnames', 'silent'), '\n'), 'fzf.vim') && get(g:, 'vsession_use_fzf', 0)
+	if exists('*fzf#run()') && get(g:, 'vsession_use_fzf', 0)
 		call fzf#run({
 					\  'source': readdir(g:vsession_path),
 					\  'sink':    function('s:_load_session'),
@@ -37,7 +37,7 @@ endfunction
 
 " delete session
 function! vsession#delete() abort
-	if match(split(execute('scriptnames', 'silent'), '\n'), 'fzf.vim') && get(g:, 'vsession_use_fzf', 0)
+	if exists('*fzf#run()') && get(g:, 'vsession_use_fzf', 0)
 		call fzf#run({
 					\  'source': readdir(g:vsession_path),
 					\  'sink':    function('s:_delete_session'),
