@@ -2,7 +2,7 @@
 This is vim session manager plugin.
 It's Can save, load and delete sessions.
 
-![](screenshots/vsession.gif)
+[![asciicast](https://asciinema.org/a/261666.svg)](https://asciinema.org/a/261666)
 
 # Installation
 ex: dein.vim
