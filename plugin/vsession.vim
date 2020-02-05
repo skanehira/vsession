@@ -9,8 +9,10 @@ endif
 
 let g:loaded_vsession = 1
 
-if !exists('g:vsession_path')
-	let g:vsession_path = expand('~/.vim/sessions')
+if exists('g:vsession_path')
+    let g:vsession_path = expand(g:vsession_path)
+el
+    let g:vsession_path = expand('~/.vim/sessions')
 endif
 
 if !isdirectory(g:vsession_path)
