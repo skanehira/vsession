@@ -58,8 +58,20 @@ VARIABLES					*vsession-variables*
 g:vsession_path					*g:vsession_path*
 	default value: "~/.vim/sessions"
 
-a:vsession_use_fzf				*g:vsession_use_fzf*
-	default value: 0 (false)
+g:vsession_ui					*g:vsession_ui*
+	default value: 'quickpick'
+	allowed values: 'quickpick' or 'fzf' or 'popup' or 'input'
+
+	Vim version 8.1.1575 is required when using 'popup'. Pressing enter
+	will select the item from the popup window and x will clsoe the popup
+	window.
+
+	fzf-vim is required when using 'fzf'.
+
+	'input' uses vim's |input| to prompt for session name.
+
+	If the require conditions are not met, it will default to 'quickpick'.
+
 
 ------------------------------------------------------------------------------
 COMMANDS					*vsession-commands*
@@ -69,15 +81,10 @@ COMMANDS					*vsession-commands*
 	Should input session file name.
 
 :LoadSession					*:LoadSession*
-	If fzf not enable and your vim version is 8.1.1575 or above,
-	sessions will displayed in popup window.
-	In the popup window, press enter will load specified session
-	and press x will close popup window.
-	Other than that, you should input session file name.
+	Loads the session based on the selected ui from |g:vsession_ui|.
 
 :DeleteSession					*:DeleteSession*
-	Delete session.
-	Basic operation is the same as LoadSession
+	Deletes the session based on the selected ui from |g:vsession_ui|.
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*vsession-functions*

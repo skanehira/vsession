@@ -16,44 +16,65 @@ endfunction
 
 " load session
 function! vsession#load() abort
-	if exists('*fzf#run()') && get(g:, 'vsession_use_fzf', 0)
+    let l:ui = get(g:, 'vsession_ui', 'quickpick')
+	if exists('*fzf#run()') && l:ui ==# 'fzf'
 		call fzf#run({
 					\  'source': readdir(g:vsession_path),
 					\  'sink':    function('s:_load_session'),
 					\  'options': '+m -x +s',
 					\  'down':    '40%'})
-
-	elseif has('patch-8.1.1575')
+	elseif has('patch-8.1.1575') && l:ui ==# 'popup'
 		let l:sessions = readdir(g:vsession_path)
 		call popup_menu(l:sessions, {
 					\ 'filter': 'popup_filter_menu',
 					\ 'callback': function('s:_load_session_filter', [l:sessions]),
 					\ 'borderchars': ['-','|','-','|','+','+','+','+'],
 					\ })
-	else
+    elseif l:ui ==# 'input'
 		call s:_load_session(input('file:'))
+	else
+        call vsession#quickpick#open({
+            \   'items': readdir(g:vsession_path),
+            \   'on_accept': function('s:_on_accept_load_session')
+            \ })
 	endif
+endfunction
+
+function! s:_on_accept_load_session(data, _name) abort
+    call vsession#quickpick#close()
+    call s:_load_session(a:data['items'][0])
 endfunction
 
 " delete session
 function! vsession#delete() abort
-	if exists('*fzf#run()') && get(g:, 'vsession_use_fzf', 0)
+    let l:ui = get(g:, 'vession_ui', 'quickpick')
+	if exists('*fzf#run()') && l:ui ==# 'fzf'
 		call fzf#run({
 					\  'source': readdir(g:vsession_path),
 					\  'sink':    function('s:_delete_session'),
 					\  'options': '-m -x +s',
 					\  'down':    '40%'})
 
-	elseif has('patch-8.1.1575')
+	elseif has('patch-8.1.1575') && l:ui ==# 'popup'
 		let l:sessions = readdir(g:vsession_path)
 		call popup_menu(l:sessions, {
 					\ 'filter': 'popup_filter_menu',
 					\ 'callback': function('s:_delete_session_filter', [l:sessions]),
 					\ 'borderchars': ['-','|','-','|','+','+','+','+'],
 					\ })
-	else
+    elseif l:ui ==# 'input'
 		call s:_delete_session(input("file:"))
+    else
+        call vsession#quickpick#open({
+            \   'items': readdir(g:vsession_path),
+            \   'on_accept': function('s:_on_accept_delete_session')
+            \ })
 	endif
+endfunction
+
+function! s:_on_accept_delete_session(data, _name) abort
+    call vsession#quickpick#close()
+    call s:_delete_session(a:data['items'][0])
 endfunction
 
 function! s:_path_join(file) abort
