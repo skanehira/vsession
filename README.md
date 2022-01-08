@@ -17,9 +17,11 @@ repo = 'skanehira/vsession'
 " default is ~/.vim/sessions.
 let g:vsession_path = '/to/your/path'
 
-" if installed fzf.vim, you can use fzf's interface to load and delete session.
-" default is false.
-let g:vsession_use_fzf = 1
+" default is 1
+let g:vsession_save_last_on_leave = 0
+
+" allowed values are 'quickpick' or 'fzf' or 'popup' or 'input'.
+let g:vsession_ui = 'quickpick'
 ```
 
 # Usage
