@@ -58,6 +58,11 @@ VARIABLES					*vsession-variables*
 g:vsession_path					*g:vsession_path*
 	default value: "~/.vim/sessions"
 
+g:vsession_save_last_on_leave		        *g:vsession_save_last_on_leave*
+	default value: 1
+	Value indicating whether to auto save the last session on |VimLeave|.
+
+
 g:vsession_ui					*g:vsession_ui*
 	default value: 'quickpick'
 	allowed values: 'quickpick' or 'fzf' or 'popup' or 'input'
