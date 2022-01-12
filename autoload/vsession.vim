@@ -10,8 +10,12 @@ function! vsession#save() abort
 		call s:echo_err('please input file name')
 		return
 	endif
-	execute 'silent mksession!' s:_path_join(file)
+	call s:_save_session(file)
 	redraw | echo 'saved' file
+endfunction
+
+function! s:_save_session(file) abort
+	execute 'silent mksession!' s:_path_join(a:file)
 endfunction
 
 " load session
@@ -96,6 +100,7 @@ function! s:_load_session(file) abort
 	endif
 
 	execute 'silent source' s:_path_join(a:file)
+	let s:current_session = a:file
 	redraw | echo 'loaded' a:file
 endfunction
 
@@ -113,6 +118,10 @@ function! s:_delete_session(file) abort
 		return
 	endif
 
+	if a:file ==# get(s, 'current_session', '')
+		let s:current_session = ''
+	endif
+
 	call delete(s:_path_join(a:file))
 	redraw | echo 'deleted' a:file
 endfunction
@@ -122,6 +131,17 @@ function! s:echo_err(message) abort
 	redraw
 	echo a:message
 	echohl None
+endfunction
+
+augroup vsession
+	au!
+	autocmd VimLeave * call s:save_last_session()
+augroup END
+
+function! s:save_last_session() abort
+	if get(g:, 'vsession_save_last_on_leave', 1) && !empty(get(s:, 'current_session', ''))
+		call s:_save_session(s:current_session)
+	endif
 endfunction
 
 let &cpo = s:save_cpo
