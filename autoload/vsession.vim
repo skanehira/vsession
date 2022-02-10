@@ -118,7 +118,7 @@ function! s:_delete_session(file) abort
 		return
 	endif
 
-	if a:file ==# get(s, 'current_session', '')
+	if a:file ==# get(s:, 'current_session', '')
 		let s:current_session = ''
 	endif
 
