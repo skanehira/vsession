@@ -20,6 +20,10 @@ endfunction
 
 " load session
 function! vsession#load() abort
+	if len(readdir(g:vsession_path)) <= 0
+		call s:echo_err('there are no session items.')
+		return
+	endif
     let l:ui = get(g:, 'vsession_ui', 'quickpick')
 	if exists('*fzf#run()') && l:ui ==# 'fzf'
 		call fzf#run({
@@ -51,6 +55,10 @@ endfunction
 
 " delete session
 function! vsession#delete() abort
+	if len(readdir(g:vsession_path)) <= 0
+		call s:echo_err('there are no session items.')
+		return
+	endif
     let l:ui = get(g:, 'vession_ui', 'quickpick')
 	if exists('*fzf#run()') && l:ui ==# 'fzf'
 		call fzf#run({
@@ -118,7 +126,7 @@ function! s:_delete_session(file) abort
 		return
 	endif
 
-	if a:file ==# get(s, 'current_session', '')
+	if a:file ==# get(s:, 'current_session', '')
 		let s:current_session = ''
 	endif
 
